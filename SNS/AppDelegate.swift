@@ -15,9 +15,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        Parse.setApplicationId("ygM5L19rEYqRrsOtGnN6vI0GuJwEd4ldfUIQdfLV", clientKey: "6cpps20VJA5G2u6PFXFFokdNpHTgeB1nypQJ2XIX")
+        PFTwitterUtils.initializeWithConsumerKey("PrBPCTJUXLPwyiSpEM4XnfMG9",  consumerSecret:"TIf0WHFaBfOrfR1hOy1VBb8Gn3rsa5IKUAJGkzx4gfAJXhicyC")
+       // PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions);
+        PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
+        PFFacebookUtils.initializeFacebook()
         // Override point for customization after application launch.
         return true
     }
+   
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -35,12 +41,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        FBAppCall.handleDidBecomeActiveWithSession(PFFacebookUtils.session())
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    func application(application: UIApplication,
+        openURL url: NSURL,
+        sourceApplication: String?,
+        annotation: AnyObject?) -> Bool {
+            return FBAppCall.handleOpenURL(url, sourceApplication:sourceApplication,
+                withSession:PFFacebookUtils.session())
+    }
+    
+    
 
 }
 
